@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/adityjoshi/aavinya/kafka"
+	"github.com/kvsb25/mobile-medical/kafka"
 )
 
 // KafkaManager is responsible for managing Kafka producers and sending messages to topics
