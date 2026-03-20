@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/adityjoshi/aavinya/database"
+	"github.com/kvsb25/mobile-medical/database"
 )
 
 // SubscribeToPaymentUpdates listens for payment updates from Redis.

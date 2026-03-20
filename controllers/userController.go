@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/adityjoshi/aavinya/database"
-	"github.com/adityjoshi/aavinya/utils"
+	"github.com/kvsb25/mobile-medical/database"
+	"github.com/kvsb25/mobile-medical/utils"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )

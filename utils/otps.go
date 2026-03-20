@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/adityjoshi/aavinya/database"
+	"github.com/kvsb25/mobile-medical/database"
 )
 
 func GenerateOtp() (string, error) {

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/adityjoshi/aavinya/controllers"
-	"github.com/adityjoshi/aavinya/middleware"
+	"github.com/kvsb25/mobile-medical/controllers"
+	"github.com/kvsb25/mobile-medical/middleware"
 	"github.com/gin-gonic/gin"
 )
 

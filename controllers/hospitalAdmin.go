@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/adityjoshi/aavinya/database"
-	kafkamanager "github.com/adityjoshi/aavinya/kafka/kafkaManager"
-	"github.com/adityjoshi/aavinya/utils"
+	"github.com/kvsb25/mobile-medical/database"
+	kafkamanager "github.com/kvsb25/mobile-medical/kafka/kafkaManager"
+	"github.com/kvsb25/mobile-medical/utils"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"

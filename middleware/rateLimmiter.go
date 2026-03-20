@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/adityjoshi/aavinya/database"
+	"github.com/kvsb25/mobile-medical/database"
 
 	"github.com/gin-gonic/gin"
 )

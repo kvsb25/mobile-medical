@@ -3,7 +3,7 @@ package controllers
 import (
 	"log"
 
-	"github.com/adityjoshi/aavinya/utils"
+	"github.com/kvsb25/mobile-medical/utils"
 	"github.com/go-redis/redis/v8"
 )
 

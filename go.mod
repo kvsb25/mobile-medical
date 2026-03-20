@@ -1,4 +1,4 @@
-module github.com/adityjoshi/aavinya
+module github.com/kvsb25/mobile-medical
 
 go 1.22.2
 

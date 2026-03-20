@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"github.com/adityjoshi/aavinya/controllers"
-	kafkamanager "github.com/adityjoshi/aavinya/kafka/kafkaManager"
-	"github.com/adityjoshi/aavinya/middleware"
+	"github.com/kvsb25/mobile-medical/controllers"
+	kafkamanager "github.com/kvsb25/mobile-medical/kafka/kafkaManager"
+	"github.com/kvsb25/mobile-medical/middleware"
 	"github.com/gin-gonic/gin"
 )
 
