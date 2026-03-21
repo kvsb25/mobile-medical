@@ -1,0 +1,16 @@
+Check whether the backend and frontend are working correctly as per their expected behavior. Make the necessary changes if either backend or frontend or both fail.
+
+--------
+
+Add the following feature:
+ - description: "Add gps location stream sharing for ambulances just like how uber shares location of their drivers to the users app. Our aim is to send nearby ambulances location to the user using our web app, location of all the ambulances irrespective of the hospital and hospital admin"
+
+ - technologies to be used:
+    - kafka topic: "create a kafka topic in the backend where the ambulance driver using the app (frontend) can push their device location as a producer only to the topic. Create the kafka topic based on regions like North-ambulances, South-ambulances."
+    - modify frontend acting as publisher: "Add functionality in the frontend so that whenever driver logs in the app their location is published on the kafka topic (e.g.: North-ambulances) in the following format, only if they are not occupied [so add a functionality to know the occupancy of an ambulance so only available ambulances' locations are published on the topic]:    {driver identifier,location coordinates, occupancy status}"
+    - modify frontend for users that want to see the ambulances nearby: "Add a page where the user can see the ambulances near by and can send them a message that i want an ambulance and the most nearby ambulances that are not occupied can accept the request"
+    - modify frontend for ambulance drivers to modify their occupancy status
+- summary: "users can see the available occupancy ambulances (and not the occupied ambulances) of any hospital (that is whom so ever, driver, is connected to the app and is free to take new patients). And the occupancy of ambulances can be set by the driver (when the driver accepts a patient (the user) request occupancy should be automatically updated from available to occupied). When the driver reaches the hospital to drop the patient (the user) it should be able to update the occupancy to available manually (through a button). The location schema (that will be published to the kafka topic) should include occupancy status so that the user end (frontend for the user) can filter the available occupancy status ambulances only. The driver will always be publishing the location, occupancy status, and its unique identifier.
+- note:
+    - there is no strict guideline to follow all the rules above. But to give an abstract understanding of the idea of what has to be added and its data flow. You can alter the Schemas and data flow as per required, if necessary. Only change if necessary, i think the provided data flow is the accurate depiction just the schemas need to be altered. But use kafka only for message queues.
+- scalability: "First propose any scalability solution that you have, on approval use your solution else go with the one provided above"

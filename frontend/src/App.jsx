@@ -18,6 +18,8 @@ import Doctors from './pages/Doctors';
 import Patients from './pages/Patients';
 import RemoveAppointment from './pages/RemoveAppointment';
 import MarkAppointment from './pages/MarkAppointment';
+import NearbyAmbulances from './pages/NearbyAmbulances';
+import AmbulanceDriverDashboard from './pages/AmbulanceDriverDashboard';
 
 const router = createBrowserRouter([
   {
@@ -137,6 +139,22 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <MarkAppointment />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: RoutesPathName.AMBULANCE_NEARBY_PAGE,
+    element: (
+      <PrivateRoute allowedRoles={["Patient"]}>
+        <NearbyAmbulances />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: RoutesPathName.AMBULANCE_DRIVER_DASHBOARD,
+    element: (
+      <PrivateRoute allowedRoles={["AmbulanceDriver"]}>
+        <AmbulanceDriverDashboard />
       </PrivateRoute>
     ),
   },

@@ -23,7 +23,9 @@ export const RoutesPathName = {
     GET_DOCTORS : '/doctors',
     GET_PATIENTS : '/patients',
     REMOVE_APPOINTMENT: '/removeAppointment',
-    MARK_APPOINTMENT: '/markAppointment'
+    MARK_APPOINTMENT: '/markAppointment',
+    AMBULANCE_NEARBY_PAGE: '/nearby-ambulances',
+    AMBULANCE_DRIVER_DASHBOARD: '/ambulance-driver-dashboard'
 }
 
 //export const apiLink = "http://localhost:3000"

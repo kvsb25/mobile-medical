@@ -44,9 +44,9 @@ func InitDatabase() {
 	}
 
 	// Migrate the schema for each database
-	DB.AutoMigrate(&Users{}, &PatientInfo{}, &HospitalAdmin{}, &Hospitals{}, &Doctors{}, &Appointment{}, &HospitalStaff{}, &BedsCount{}, &Patients{}, &Room{}, &PatientBeds{})
-	NorthDB.AutoMigrate(&Users{}, &PatientInfo{}, &HospitalAdmin{}, &Hospitals{}, &Doctors{}, &Appointment{}, &HospitalStaff{}, &BedsCount{}, &Patients{}, &Room{}, &PatientBeds{})
-	SouthDB.AutoMigrate(&Users{}, &PatientInfo{}, &HospitalAdmin{}, &Hospitals{}, &Doctors{}, &Appointment{}, &HospitalStaff{}, &BedsCount{}, &Patients{}, &Room{}, &PatientBeds{})
+	DB.AutoMigrate(&Users{}, &PatientInfo{}, &HospitalAdmin{}, &Hospitals{}, &Doctors{}, &Appointment{}, &HospitalStaff{}, &BedsCount{}, &Patients{}, &Room{}, &PatientBeds{}, &AmbulanceDriver{})
+	NorthDB.AutoMigrate(&Users{}, &PatientInfo{}, &HospitalAdmin{}, &Hospitals{}, &Doctors{}, &Appointment{}, &HospitalStaff{}, &BedsCount{}, &Patients{}, &Room{}, &PatientBeds{}, &AmbulanceDriver{})
+	SouthDB.AutoMigrate(&Users{}, &PatientInfo{}, &HospitalAdmin{}, &Hospitals{}, &Doctors{}, &Appointment{}, &HospitalStaff{}, &BedsCount{}, &Patients{}, &Room{}, &PatientBeds{}, &AmbulanceDriver{})
 }
 
 type Gender string
@@ -62,6 +62,7 @@ const (
 	Staff   UserType = "Staff"
 	Patient UserType = "Patient"
 	Admin   UserType = "Admin"
+	Driver  UserType = "AmbulanceDriver"
 )
 
 type Users struct {
@@ -169,6 +170,17 @@ type HospitalStaff struct {
 	Username      string   `json:"username" gorm:"unique;not null"`
 	Password      string   `json:"password" gorm:"not null"`
 	Region        string   `json:"region"`
+}
+
+type AmbulanceDriver struct {
+	DriverID   uint   `json:"driver_id" gorm:"primaryKey;autoIncrement"`
+	FullName   string `json:"full_name" gorm:"not null"`
+	Email      string `json:"email" gorm:"not null;unique"`
+	Password   string `json:"password" gorm:"not null"`
+	VehicleNo  string `json:"vehicle_no" gorm:"not null"`
+	HospitalID uint   `json:"hospital_id" gorm:"not null;index"`
+	Region     string `json:"region" gorm:"not null;index"`
+	UserType   string `json:"user_type" gorm:"default:AmbulanceDriver"`
 }
 type BedsType string
 

@@ -118,3 +118,24 @@ func (km *KafkaManager) SendHospitalStaffRegisterMessage(region, topic, message 
 	log.Printf("Message successfully sent to topic %s in %s region", topic, region)
 	return nil
 }
+
+func (km *KafkaManager) SendAmbulanceLocationMessage(region, message string) error {
+	var (
+		err   error
+		topic string
+	)
+	switch region {
+	case "north":
+		topic = "north-ambulances"
+		err = km.northProducer.SendMessage(topic, message)
+	case "south":
+		topic = "south-ambulances"
+		err = km.southProducer.SendMessage(topic, message)
+	default:
+		return fmt.Errorf("invalid region: %s", region)
+	}
+	if err != nil {
+		return fmt.Errorf("failed to send ambulance update to topic %s: %w", topic, err)
+	}
+	return nil
+}

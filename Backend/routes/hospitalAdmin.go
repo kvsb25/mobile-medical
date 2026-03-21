@@ -35,6 +35,7 @@ func HospitalAdmin(incomingRoutes *gin.Engine, km *kafkamanager.KafkaManager) {
 			c.Set("km", km)
 			controllers.RegisterStaff(c)
 		})
+		adminRouting.POST("/registerAmbulanceDriver", controllers.RegisterAmbulanceDriver)
 		adminRouting.POST("/registerBeds", middleware.OtpAuthRequireed, controllers.AddBedType)
 		adminRouting.POST("/updateBeds", middleware.OtpAuthRequireed, controllers.UpdateTotalBeds)
 		adminRouting.GET("/getBeds", middleware.OtpAuthRequireed, controllers.GetTotalBeds)

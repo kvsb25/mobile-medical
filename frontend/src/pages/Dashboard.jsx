@@ -28,6 +28,10 @@ function Dashboard() {
       return <ReceptionistDashboard />;
     case 'Compounder':
       return <CompounderDashboard />;
+    case 'AmbulanceDriver':
+      return <Navigate to={RoutesPathName.AMBULANCE_DRIVER_DASHBOARD} replace />;
+    case 'Patient':
+      return <Navigate to={RoutesPathName.AMBULANCE_NEARBY_PAGE} replace />;
     default:
       return <Navigate to={RoutesPathName.LOGIN_PAGE} replace />;
   }

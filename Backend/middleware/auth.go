@@ -95,6 +95,9 @@ func AuthRequired(userType string, requiredRoles ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.GetHeader("Authorization")
 		if tokenString == "" {
+			tokenString = c.Query("token")
+		}
+		if tokenString == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization token is missing"})
 			c.Abort()
 			return
@@ -136,18 +139,28 @@ func AuthRequired(userType string, requiredRoles ...string) gin.HandlerFunc {
 		}
 
 		// Handle additional claims
-		if region, exists := claims["region"].(string); exists {
+		if region, exists := claims["region"].(string); exists && region != "" {
 			c.Set("region", region)
 		} else {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Region not specified in token"})
-			c.Abort()
-			return
+			regionFromHeader := c.GetHeader("Region")
+			if regionFromHeader == "" {
+				regionFromHeader = c.Query("region")
+			}
+			if regionFromHeader != "" {
+				c.Set("region", strings.ToLower(regionFromHeader))
+			} else {
+				c.JSON(http.StatusUnauthorized, gin.H{"error": "Region not specified in token"})
+				c.Abort()
+				return
+			}
 		}
 
 		// Assign IDs based on userType
 		switch userType {
 		case "Admin":
 			c.Set("admin_id", userID)
+		case "AmbulanceDriver":
+			c.Set("driver_id", userID)
 		case "Doctor":
 			doctorIDFloat, doctorExists := claims["doctor_id"].(float64)
 			department, deptExists := claims["department"].(string)

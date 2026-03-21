@@ -5,7 +5,8 @@ import { useAuth } from "../context/AuthProvider";
 const roleEndpoints = {
   Admin: "http://localhost:2426/hospitalAdmin/adminOtp",
   Compounder: "http://localhost:2426/compounder/staffOtp",
-  Receptionist: "http://localhost:2426/receptionist/staffOtp"
+  Receptionist: "http://localhost:2426/receptionist/staffOtp",
+  Patient: "http://localhost:2426/verify-otp",
 };
 
 export default function VerifyOtpPage() {
@@ -21,7 +22,7 @@ export default function VerifyOtpPage() {
     const region = localStorage.getItem("region");
     const role = localStorage.getItem("role");
 
-    if (!jwtToken || !region || !role) {
+    if (!region || !role) {
       alert("Missing authentication data. Please log in again.");
       navigate("/login");
       return;
@@ -36,18 +37,24 @@ export default function VerifyOtpPage() {
     setIsSubmitting(true);
 
     try {
+      const headers = {
+        "Content-Type": "application/json",
+        Region: region,
+      };
+      if (jwtToken) {
+        headers.Authorization = jwtToken;
+      }
       const response = await fetch(endpoint, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": jwtToken,
-          "Region": region
-        },
+        headers,
         body: JSON.stringify({ email, otp }),
       });
 
       if (response.ok) {
-        login(jwtToken, { email }, region);
+        const data = await response.json();
+        const tokenToStore = data.jwttoken || jwtToken;
+        if (tokenToStore) localStorage.setItem("jwtToken", tokenToStore);
+        login(tokenToStore, { email }, region);
         navigate("/dashboard");
       } else {
         const errorData = await response.json();

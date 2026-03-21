@@ -6,6 +6,8 @@ const roleEndpoints = {
   Compounder: "http://localhost:2426/compounder/staffLogin",
   Doctor: "http://localhost:2426/doctor/doctorLogin",
   Receptionist: "http://localhost:2426/receptionist/staffLogin",
+  Patient: "http://localhost:2426/login",
+  AmbulanceDriver: "http://localhost:2426/ambulanceDriver/login",
 };
 
 export default function LoginPage() {
@@ -39,11 +41,14 @@ export default function LoginPage() {
 
       if (!response.ok) throw new Error(data.message || "Login failed");
 
-      localStorage.setItem("jwtToken", data.token);
+      if (data.token) localStorage.setItem("jwtToken", data.token);
       localStorage.setItem("region", formData.region);
       localStorage.setItem("role", formData.role);
+      if (formData.role === "AmbulanceDriver" && data.driver_id) {
+        localStorage.setItem("driverID", data.driver_id);
+      }
 
-      if (formData.role === "Doctor") {
+      if (formData.role === "Doctor" || formData.role === "AmbulanceDriver") {
         navigate("/dashboard");
       } else {
         navigate("/verifyotp");

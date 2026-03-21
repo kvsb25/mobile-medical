@@ -48,6 +48,10 @@ func main() {
 			log.Printf("Starting Kafka consumer for region: %s\n", r)
 			consumer.StartConsumer(r)
 		}(region)
+		go func(r string) {
+			log.Printf("Starting ambulance Kafka consumer for region: %s\n", r)
+			consumer.StartAmbulanceConsumer(r)
+		}(region)
 	}
 
 	go controllers.SubscribeToPaymentUpdates()
@@ -102,4 +106,5 @@ func setupRoutes(router *gin.Engine) {
 	routes.HospitalAdmin(router, km)
 	routes.StaffRoutes(router, km)
 	routes.DoctorRoutes(router)
+	routes.AmbulanceRoutes(router, km)
 }
