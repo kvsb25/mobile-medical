@@ -9,7 +9,7 @@ COPY . .
 
 RUN go mod tidy && go build -o main-service .
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 WORKDIR /app
 
