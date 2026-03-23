@@ -8,7 +8,7 @@ import (
 )
 
 func StartConsumer(region string) {
-	kafkaBroker := "localhost:9092"
+	brokers := KafkaBrokerAddrs()
 	var topic = []string{
 		"hospital_admin",
 		"hospital_registration",
@@ -23,7 +23,7 @@ func StartConsumer(region string) {
 	switch region {
 	case "north":
 		//topic := "hospital_admin"
-		northConsumer, err := NewNorthConsumer(kafkaBroker, topic)
+		northConsumer, err := NewNorthConsumer(brokers, topic)
 		if err != nil {
 			log.Fatalf("Failed to create north consumer: %v", err)
 		}

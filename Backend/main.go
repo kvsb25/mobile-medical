@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/kvsb25/mobile-medical/consumer"
 	"github.com/kvsb25/mobile-medical/controllers"
@@ -24,17 +26,24 @@ func init() {
 }
 
 func main() {
-	// Load environment variables
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+		log.Printf("optional .env not loaded: %v", err)
 	}
 
 	database.InitDatabase()
 	defer database.CloseDatabase()
 	database.InitializeRedisClient()
 
-	northBrokers := []string{"localhost:9092"}
-	southBrokers := []string{"localhost:9092"}
+	kafkaBroker := os.Getenv("KAFKA_BROKER")
+	if kafkaBroker == "" {
+		kafkaBroker = "localhost:9092"
+	}
+	brokers := strings.Split(kafkaBroker, ",")
+	for i := range brokers {
+		brokers[i] = strings.TrimSpace(brokers[i])
+	}
+	northBrokers := brokers
+	southBrokers := brokers
 
 	var err error
 	km, err = kafkamanager.NewKafkaManager(northBrokers, southBrokers)

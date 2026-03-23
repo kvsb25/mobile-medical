@@ -37,7 +37,7 @@ func StartAmbulanceConsumer(region string) {
 	topic := region + "-ambulances"
 	cfg := sarama.NewConfig()
 	cfg.Consumer.Return.Errors = true
-	client, err := sarama.NewConsumer([]string{"localhost:9092"}, cfg)
+	client, err := sarama.NewConsumer(KafkaBrokerAddrs(), cfg)
 	if err != nil {
 		log.Printf("ambulance consumer init failed for %s: %v", region, err)
 		return

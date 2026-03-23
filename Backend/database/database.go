@@ -2,11 +2,19 @@ package database
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+func getenv(key, def string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return def
+}
 
 var (
 	NorthDB *gorm.DB
@@ -16,32 +24,48 @@ var (
 
 func InitDatabase() {
 	var err error
-	// Main DB connection (hosp)
-	dsn := "host=localhost user=postgres password=manav2406 dbname=hosp port=5432"
+	// DSNs from env (docker-compose sets DB_*); local defaults match typical dev Postgres
+	dsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		getenv("DB_DEFAULT_HOST", "localhost"),
+		getenv("DB_DEFAULT_USER", "postgres"),
+		getenv("DB_DEFAULT_PASSWORD", "postgres"),
+		getenv("DB_DEFAULT_NAME", "hosp"),
+		getenv("DB_DEFAULT_PORT", "5432"),
+	)
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
-	} else {
-		fmt.Println("Database connected successfully ⚡️")
 	}
+	fmt.Println("Database connected successfully ⚡️")
 
-	// North DB connection (northdb)
-	Northdsn := "host=localhost user=postgres password=manav2406 dbname=northdb port=5432"
+	Northdsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		getenv("DB_NORTH_HOST", "localhost"),
+		getenv("DB_NORTH_USER", "postgres"),
+		getenv("DB_NORTH_PASSWORD", "postgres"),
+		getenv("DB_NORTH_NAME", "northdb"),
+		getenv("DB_NORTH_PORT", "5432"),
+	)
 	NorthDB, err = gorm.Open(postgres.Open(Northdsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect North database")
-	} else {
-		fmt.Println("North database connected successfully ⚡️")
 	}
+	fmt.Println("North database connected successfully ⚡️")
 
-	// South DB connection (southdb)
-	Southdsn := "host=localhost user=postgres password=manav2406 dbname=southdb port=5432"
+	Southdsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		getenv("DB_SOUTH_HOST", "localhost"),
+		getenv("DB_SOUTH_USER", "postgres"),
+		getenv("DB_SOUTH_PASSWORD", "postgres"),
+		getenv("DB_SOUTH_NAME", "southdb"),
+		getenv("DB_SOUTH_PORT", "5432"),
+	)
 	SouthDB, err = gorm.Open(postgres.Open(Southdsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect South database")
-	} else {
-		fmt.Println("South database connected successfully ⚡️")
 	}
+	fmt.Println("South database connected successfully ⚡️")
 
 	// Migrate the schema for each database
 	DB.AutoMigrate(&Users{}, &PatientInfo{}, &HospitalAdmin{}, &Hospitals{}, &Doctors{}, &Appointment{}, &HospitalStaff{}, &BedsCount{}, &Patients{}, &Room{}, &PatientBeds{}, &AmbulanceDriver{})

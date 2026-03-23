@@ -22,3 +22,33 @@ EXPOSE 2426
 
 
 CMD ["./main-service"]
+
+
+# # Use Golang base image to build the app
+# FROM golang:1.24 AS builder
+
+# WORKDIR /app
+
+# COPY go.mod go.sum ./
+# RUN go mod download
+
+# COPY . .
+
+# ENV GOARCH=amd64
+# ENV GOOS=linux
+
+# RUN go build -o main-service .
+
+# FROM debian:bookworm-slim
+
+# WORKDIR /app
+
+# COPY --from=builder /app/main-service .
+
+# RUN apt-get update && apt-get install -y ca-certificates
+
+
+# EXPOSE 2426
+
+
+# CMD ["./main-service"]
