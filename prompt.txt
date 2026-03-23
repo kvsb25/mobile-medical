@@ -20,7 +20,9 @@ fix signup frontend for RBAC
 
 ====================================================================================================================
 
-In /consumer/north_consumer.go, /consumer/sourt_consumer.go, there is no processing of the messages of topic north-ambulance or south-ambulance, and the processing to be done is putting the message into redis with geoKey and metaKey as mentioned in function getNearbyAvailableAmbulances at /controllers/ambulance.go. Make sure the values for the geoKey and metaKey correspond to how they are expected and used in getNearbyAvailableAmbulances function.
+1. In /consumer/north_consumer.go, /consumer/sourt_consumer.go, there is no processing of the messages of topic north-ambulance or south-ambulance, and the processing to be done is adding the value attribute to geoKey and metaKey keys in redis corresponding to their use as mentioned in function getNearbyAvailableAmbulances at /controllers/ambulance.go. Make sure the values for the geoKey and metaKey correspond to how they are expected and used in getNearbyAvailableAmbulances function.
+
+2. Also for route /ambulanceDriver/update being hit by AmbulanceDriverDashboard.jsx, make it a stream sending updates every minute or every few minutes
 
 
-Role based sign up nahi ho raha. OTP logic check
+Role based sign up nahi ho raha. OTP login logic check

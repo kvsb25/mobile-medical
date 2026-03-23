@@ -4,6 +4,9 @@ export default function AmbulanceDriverDashboard() {
   const [occupancy, setOccupancy] = useState("available");
   const [status, setStatus] = useState("idle");
   const watchIdRef = useRef(null);
+  const intervalRef = useRef(null);
+  const latestCoordsRef = useRef(null);
+  const hasSentInitialRef = useRef(false);
   const token = useMemo(() => localStorage.getItem("jwtToken"), []);
   const region = useMemo(() => localStorage.getItem("region") || "north", []);
   const driverID = useMemo(() => Number(localStorage.getItem("driverID")), []);
@@ -36,7 +39,14 @@ export default function AmbulanceDriverDashboard() {
     if (!navigator.geolocation || !driverID) return;
     watchIdRef.current = navigator.geolocation.watchPosition(
       (p) => {
-        pushUpdate(p.coords.latitude, p.coords.longitude, occupancy);
+        latestCoordsRef.current = {
+          lat: p.coords.latitude,
+          lng: p.coords.longitude,
+        };
+        if (!hasSentInitialRef.current) {
+          hasSentInitialRef.current = true;
+          pushUpdate(p.coords.latitude, p.coords.longitude, occupancy);
+        }
       },
       () => setStatus("location-error"),
       { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 }
@@ -44,7 +54,20 @@ export default function AmbulanceDriverDashboard() {
     return () => {
       if (watchIdRef.current !== null) navigator.geolocation.clearWatch(watchIdRef.current);
     };
-  }, [occupancy, driverID]);
+  }, [driverID, occupancy]);
+
+  useEffect(() => {
+    if (!driverID) return;
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      const coords = latestCoordsRef.current;
+      if (!coords) return;
+      pushUpdate(coords.lat, coords.lng, occupancy);
+    }, 60 * 1000);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [driverID, occupancy]);
 
   const markAvailable = async () => {
     await fetch("http://localhost:2426/ambulanceDriver/mark-available", {

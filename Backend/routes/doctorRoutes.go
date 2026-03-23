@@ -9,9 +9,9 @@ import (
 func DoctorRoutes(incomingRoutes *gin.Engine) {
 
 	doctorRouting := incomingRoutes.Group("/doctor")
+	doctorRouting.POST("/doctorLogin", controllers.DoctorLogin)
 	doctorRouting.Use(middleware.AuthRequired("Doctor", ""))
 	{
-		doctorRouting.POST("/doctorLogin", controllers.DoctorLogin)
 		doctorRouting.POST("/patientAppointed", controllers.MarkAppointmentAsDone)
 		// to do: add the otp verification for the doctor
 		// doctorRouting.POST("/doctorOtp", controllers.VerifyDoctorOTP)
