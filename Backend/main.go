@@ -116,4 +116,5 @@ func setupRoutes(router *gin.Engine) {
 	routes.StaffRoutes(router, km)
 	routes.DoctorRoutes(router)
 	routes.AmbulanceRoutes(router, km)
+	routes.HealthRoutes(router);
 }

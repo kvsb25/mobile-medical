@@ -175,6 +175,7 @@ func UpdateAmbulanceState(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "marshal failed"})
 		return
 	}
+	// push location to kafka topic using kafka manager
 	if err := km.SendAmbulanceLocationMessage(region, string(raw)); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

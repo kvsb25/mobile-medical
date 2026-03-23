@@ -17,7 +17,7 @@ func StartConsumer(region string) {
 		"patient_Admit",
 		"patient_admission",
 		"appointment_reg",
-
+		"ambulances"
 		// Add other topics as necessary
 	}
 	switch region {

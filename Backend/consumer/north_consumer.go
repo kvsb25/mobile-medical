@@ -274,14 +274,14 @@ func processMessage(topic string, msg *sarama.ConsumerMessage) error {
 
 		// Now construct the notification message
 		notificationMessage := fmt.Sprintf(`{
-		"patient_name": "%s",
-		"appointment_time": "%s",
-		"doctor_name": "%s",
-		"department": "%s",
-		"appointment_date": "%s",
-		"hospital_id": "%s",
-		"real_time": "%s"
-	}`,
+				"patient_name": "%s",
+				"appointment_time": "%s",
+				"doctor_name": "%s",
+				"department": "%s",
+				"appointment_date": "%s",
+				"hospital_id": "%s",
+				"real_time": "%s"
+			}`,
 			user.FullName,
 			appointment.AppointmentTime.Format("15:04"), // Appointment time
 			doctor.FullName,
