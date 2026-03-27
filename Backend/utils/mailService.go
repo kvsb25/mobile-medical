@@ -2,13 +2,14 @@ package utils
 
 import (
 	"fmt"
-
+	"os"
 	"gopkg.in/gomail.v2"
 )
+var MAILPASS = []byte(os.Getenv("MAILPASS"))
 
 func OtpRegistration(to, otp string) error {
 	message := gomail.NewMessage()
-	message.SetHeader("From", "aditya3.collegeboard@gmail.com")
+	message.SetHeader("From", "kovidhvsb7724@gmail.com")
 	message.SetHeader("To", to, "elitetitanofficial@gmail.com")
 	message.SetHeader("Subject", "Otp Verification")
 
@@ -31,7 +32,7 @@ func OtpRegistration(to, otp string) error {
 
 	//message.Attach("/home/Alex/lolcat.jpg")
 
-	dialer := gomail.NewDialer("smtp.gmail.com", 587, "aditya3.collegeboard@gmail.com", "ehnxaubjqelkotks") // Update with your SMTP server details
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, "kovidhvsb7724@gmail.com", MAILPASS) // Update with your SMTP server details
 
 	// Send email
 	if err := dialer.DialAndSend(message); err != nil {
@@ -43,7 +44,7 @@ func OtpRegistration(to, otp string) error {
 }
 func SendAppointmentEmail(patientEmail, doctorName, appointmentDate, appointmentTime, bookingTime string) error {
 	message := gomail.NewMessage()
-	message.SetHeader("From", "aditya3.collegeboard@gmail.com")
+	message.SetHeader("From", "kovidhvsb7724@gmail.com")
 	message.SetHeader("To", patientEmail)
 	message.SetHeader("Subject", "Appointment Confirmation")
 
@@ -64,7 +65,7 @@ func SendAppointmentEmail(patientEmail, doctorName, appointmentDate, appointment
 	message.SetBody("text/html", htmlBody)
 
 	// Initialize SMTP dialer
-	dialer := gomail.NewDialer("smtp.gmail.com", 587, "aditya3.collegeboard@gmail.com", "ehnxaubjqelkotks") // Update with your SMTP server details
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, "kovidhvsb7724@gmail.com", MAILPASS) // Update with your SMTP server details
 
 	// Send email
 	if err := dialer.DialAndSend(message); err != nil {
@@ -77,7 +78,7 @@ func SendAppointmentEmail(patientEmail, doctorName, appointmentDate, appointment
 
 func SendAppointmentComingEmail(patientEmail, doctorName, appointmentDate, appointmentTime, bookingTime string) error {
 	message := gomail.NewMessage()
-	message.SetHeader("From", "aditya3.collegeboard@gmail.com")
+	message.SetHeader("From", "kovidhvsb7724@gmail.com")
 	message.SetHeader("To", patientEmail)
 	message.SetHeader("Subject", "Appointment Coming")
 
@@ -98,7 +99,7 @@ func SendAppointmentComingEmail(patientEmail, doctorName, appointmentDate, appoi
 	message.SetBody("text/html", htmlBody)
 
 	// Initialize SMTP dialer
-	dialer := gomail.NewDialer("smtp.gmail.com", 587, "aditya3.collegeboard@gmail.com", "ehnxaubjqelkotks") // Update with your SMTP server details
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, "kovidhvsb7724@gmail.com", MAILPASS) // Update with your SMTP server details
 
 	// Send email
 	if err := dialer.DialAndSend(message); err != nil {
@@ -111,7 +112,7 @@ func SendAppointmentComingEmail(patientEmail, doctorName, appointmentDate, appoi
 
 func SendLoginDetailsEmail(patientEmail, patientName, password string) error {
 	message := gomail.NewMessage()
-	message.SetHeader("From", "aditya3.collegeboard@gmail.com")
+	message.SetHeader("From", "kovidhvsb7724@gmail.com")
 	message.SetHeader("To", patientEmail)
 	message.SetHeader("Subject", "Login Details")
 
@@ -130,7 +131,7 @@ func SendLoginDetailsEmail(patientEmail, patientName, password string) error {
     `
 	message.SetBody("text/html", htmlBody)
 
-	dialer := gomail.NewDialer("smtp.gmail.com", 587, "aditya3.collegeboard@gmail.com", "ehnxaubjqelkotks")
+	dialer := gomail.NewDialer("smtp.gmail.com", 587, "kovidhvsb7724@gmail.com", MAILPASS)
 
 	if err := dialer.DialAndSend(message); err != nil {
 		return fmt.Errorf("failed to send email: %w", err)
