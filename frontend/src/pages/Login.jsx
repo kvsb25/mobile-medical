@@ -1,13 +1,31 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const roleEndpoints = {
-  Admin: "http://localhost:2426/hospitalAdmin/adminLogin",
-  Compounder: "http://localhost:2426/compounder/staffLogin",
-  Doctor: "http://localhost:2426/doctor/doctorLogin",
-  Receptionist: "http://localhost:2426/receptionist/staffLogin",
-  Patient: "http://localhost:2426/login",
-  AmbulanceDriver: "http://localhost:2426/ambulanceDriver/login",
+const roleLoginConfig = {
+  Admin: {
+    endpoint: "http://localhost:2426/hospitalAdmin/adminLogin",
+    requiresOtp: true,
+  },
+  Compounder: {
+    endpoint: "http://localhost:2426/compounder/staffLogin",
+    requiresOtp: true,
+  },
+  Doctor: {
+    endpoint: "http://localhost:2426/doctor/doctorLogin",
+    requiresOtp: false, // doctor OTP verify route is not enabled in backend routes
+  },
+  Receptionist: {
+    endpoint: "http://localhost:2426/receptionist/staffLogin",
+    requiresOtp: true,
+  },
+  Patient: {
+    endpoint: "http://localhost:2426/login",
+    requiresOtp: true,
+  },
+  AmbulanceDriver: {
+    endpoint: "http://localhost:2426/ambulanceDriver/login",
+    requiresOtp: false,
+  },
 };
 
 export default function LoginPage() {
@@ -29,13 +47,24 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const endpoint = roleEndpoints[formData.role];
+    const config = roleLoginConfig[formData.role];
+    if (!config) {
+      setError("Unsupported role selected.");
+      setLoading(false);
+      return;
+    }
 
     try {
-      const response = await fetch(endpoint, {
+      // Backend login handlers expect email/password/region payload.
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+        region: formData.region,
+      };
+      const response = await fetch(config.endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       const data = await response.json();
 
@@ -48,10 +77,10 @@ export default function LoginPage() {
         localStorage.setItem("driverID", data.driver_id);
       }
 
-      if (formData.role === "Doctor" || formData.role === "AmbulanceDriver") {
-        navigate("/dashboard");
-      } else {
+      if (config.requiresOtp) {
         navigate("/verifyotp");
+      } else {
+        navigate("/dashboard");
       }
     } catch (error) {
       setError(error.message);
@@ -123,7 +152,7 @@ export default function LoginPage() {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                {Object.keys(roleEndpoints).map((role) => (
+                {Object.keys(roleLoginConfig).map((role) => (
                   <option key={role} value={role}>
                     {role}
                   </option>
