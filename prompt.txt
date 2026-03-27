@@ -1,28 +1,18 @@
-in north_consumer.go file processMessage function to process the incoming messages in the queues
-
-
-In frontend, in AmbulanceDriverDashboard.jsx establish a server sent event stream connection with the POST 'localhost:2426/ambulanceDriver/update' to continuously send driver location (using javascript geolocation api in the frontend) every minute or few minutes to the backend so that it can be produced to the kafka topic -> 'ambulances' (based on region whose code is implemented) for further consumption of the same topic by the users of role->'Patient' on NearbyAmbulances.jsx page.
-
-In Backend, in north_consumer.go, either put the logic for consuming topic 'ambulances' in function 'processMessage' or somewhere else appropriate from where the user of role->'Patient' on the page NearbyAmbulances.jsx can get continuous updates on location of the drivers from the backend through a stream of events using server sent events.
-
-----------------
-first check ambulanceUser.GET("/stream", controllers.StreamNearbyAmbulances) implementation and NearbyAmbulances.jsx implementation whether they support server sent events. If yes how are they supporting server sent events.
-
-In Backend, in north_consumer.go, in function 'processMessage' process the topic 'ambulances' as follows:
-    - if redis entry with key template 'region:driverID' does not exist: create a redis entry following the key template with value template -> '{location:{lat:float, lng:float}}' and the value being the location in the latest message of topic 'ambulances'
-    - if redis entry exits: overwrite the entry every time with the location in the latest message in the topic 'ambulances'
-
-
-In Frontend, in NearbyAmbulances.jsx, 
---------------------
-
-fix signup frontend for RBAC
-
-====================================================================================================================
-
-1. In /consumer/north_consumer.go, /consumer/sourt_consumer.go, there is no processing of the messages of topic north-ambulance or south-ambulance, and the processing to be done is adding the value attribute to geoKey and metaKey keys in redis corresponding to their use as mentioned in function getNearbyAvailableAmbulances at /controllers/ambulance.go. Make sure the values for the geoKey and metaKey correspond to how they are expected and used in getNearbyAvailableAmbulances function.
-
-2. Also for route /ambulanceDriver/update being hit by AmbulanceDriverDashboard.jsx, make it a stream sending updates every minute or every few minutes
-
-
-Role based sign up nahi ho raha. OTP login logic check
+Attachments:
+ - abstract syntax tree of the complete project (both frontend and backend)
+ - Phase 1 report (report of the previous edition of the project)
+ - Phase 2 report **format** (format for current edition as mentioned in abstract syntax tree)
+Task:
+ - read the abstract syntax tree of the complete project
+ - Phase 1 report
+ - Create a new report which is just an extension of the provided report. The new report must preserve the old reports content as in context (not exact words, but keywords must stay)
+ - Create a new report as Phase 2 format which should be an extension of report of Phase 1 based on the Abstract syntax tree of the complete project. So in Phase 2 report the complete project has to be covered.
+ - change the project name from swaasthyaa to Mobile-medical
+ - Leave space for frontend screenshots
+ - Formatting rules:
+    - Keep the table's color, design same as the phase 1 report
+    - Keep the text formatting (font size, line spacing, centered text wherever it is) for section content same as phase 1 report
+Note:
+ - In Phase 2 report preserve the Phase 1 report content conceptually (by keeping the main points from the phase 1 report)
+ - At the very end of the phase 1 report, personal contributions are mentioned, preserve them as it is.
+ - Some what the format is similar, so preserve the similar format content

@@ -8,6 +8,9 @@ Included:
 - `frontend/*.ast.md`: per-file detailed frontend AST docs.
 - `backend/*.ast.md`: per-file detailed backend AST docs.
 
+Latest frontend additions:
+- `frontend/NearbyAmbulances.jsx.ast.md`: map, SSE stream, and free location search AST.
+
 Selection policy:
 - Scope is limited to `frontend` and `Backend`.
 - Only files that drive app behavior are represented (entry points, routing, auth, core request workflows).
